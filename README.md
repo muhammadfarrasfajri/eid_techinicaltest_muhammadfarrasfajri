@@ -32,7 +32,7 @@ Cukup jalankan perintah ini di terminal. Database TimescaleDB beserta seluruh ta
 
 ### 4. Akun Default
 - **Username:** `admin`
-- **Password:** `password123`
+- **Password:** `admin123`
 
 ### 5. Test Sensor mesin
 - **buka link di browser** `http://localhost:5014/swagger`
