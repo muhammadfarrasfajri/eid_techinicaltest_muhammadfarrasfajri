@@ -35,9 +35,9 @@ Cukup jalankan perintah ini di terminal. Database TimescaleDB beserta seluruh ta
 - **Password:** `password123`
 
 ### 5. Test Sensor mesin
-buka link di browser `http://localhost:5014/swagger`
-Cari Endpoint POST `/api/LogProduksi/sensor`
-Input Data:
+- **buka link di browser** `http://localhost:5014/swagger`
+- **Cari Endpoint POST** `/api/LogProduksi/sensor`
+- **Input Data:**
 {
   "idMesin": "97ea86b4-c9a6-46db-922d-2747f3235316",
   "jumlahBarang": 120,
