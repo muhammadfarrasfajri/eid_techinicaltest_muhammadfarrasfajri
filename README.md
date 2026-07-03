@@ -15,3 +15,7 @@ Cukup jalankan perintah ini di terminal. Database TimescaleDB beserta seluruh ta
 `cd fe_eid_techinicaltest`
 `npm install`
 `npm run dev`
+
+## 4. Akun Default
+- **Username:** `admin`
+- **Password:** `password123`
