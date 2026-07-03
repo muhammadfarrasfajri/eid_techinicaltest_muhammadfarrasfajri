@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: eid_techinicaltest_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=eid_techinicaltest_db
+    ports:
+      - "5434:5432"
+    volumes:
+      # Mapping file init.sql agar dieksekusi otomatis saat pertama kali jalan
+      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
