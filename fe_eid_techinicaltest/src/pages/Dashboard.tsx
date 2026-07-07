@@ -54,10 +54,25 @@ const getLabelShift = (raw: string): string => {
   if (!raw) return "";
   const d = new Date(raw);
   if (isNaN(d.getTime())) return "";
-  const hour = d.getUTCHours(); // time_bucket pakai UTC
-  if (hour < 8) return "Shift Malam";
-  if (hour < 16) return "Shift Pagi";
-  return "Shift Siang";
+
+  // Mengambil jam dengan cara yang SAMA PERSIS dengan formatWaktuBucket
+  const jamString = d.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }); // Output akan selalu format 24 jam lokal, contoh: "14:00" atau "08:30"
+
+  // Ambil 2 karakter pertama dari hasil di atas (sebelum tanda titik/titik dua)
+  const hourText = jamString.substring(0, 2);
+  const hour = parseInt(hourText, 10);
+
+  if (isNaN(hour)) return "";
+
+  console.log("Jam Extract:", hour, "dari string terformat:", jamString);
+
+  // Silakan ubah angka batas shift di bawah sesuai kebutuhan pabrik
+  if (hour < 12) return "Shift Pagi"; // 00:00 - 11:59
+  if (hour < 19) return "Shift Siang"; // 12:00 - 18:59
+  return "Shift Malam"; // 19:00 - 23:59
 };
 
 // ── Helper: export laporan ke CSV ──
@@ -562,6 +577,7 @@ const Dashboard: React.FC = () => {
                 laporan.map((item, index) => {
                   const { tanggal, jam } = formatWaktuBucket(item.waktuBucket);
                   const shift = getLabelShift(item.waktuBucket);
+                  console.log(jam);
                   const shiftClass =
                     shift === "Shift Pagi"
                       ? "shift-pagi"

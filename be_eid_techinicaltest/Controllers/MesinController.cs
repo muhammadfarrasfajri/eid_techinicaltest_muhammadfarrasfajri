@@ -2,6 +2,7 @@
 using be_eid_techinicaltest.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql;
 
 namespace be_eid_techinicaltest.Controllers
 {
@@ -63,14 +64,29 @@ namespace be_eid_techinicaltest.Controllers
         }
 
         // Tambahkan ini untuk Hapus Mesin
+    
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMesin(Guid id)
         {
-            var existingMesin = await _repo.GetMesinByIdAsync(id);
-            if (existingMesin == null) return NotFound(new { message = "Mesin tidak ditemukan" });
-
-            await _repo.DeleteMesinAsync(id);
-            return Ok(new { message = "Mesin berhasil dihapus" });
+            try
+            {
+                await _repo.DeleteMesinAsync(id);
+                return Ok(new { message = "Mesin berhasil dihapus" });
+            }
+            catch (PostgresException ex) when (ex.SqlState == "23503")
+            {
+                // Menangkap error Foreign Key Violation secara spesifik
+                return Conflict(new
+                {
+                    error = true,
+                    message = "Gagal menghapus: Mesin ini tidak bisa dihapus karena masih memiliki riwayat data produksi yang terikat."
+                });
+            }
+            catch (Exception ex)
+            {
+                // Menangkap error lain yang tidak terduga
+                return StatusCode(500, new { message = "Terjadi kesalahan internal pada server." });
+            }
         }
     }
 
